@@ -1,3 +1,5 @@
+import { cookies } from "next/headers";
+
 const baseURL = "https://uptime.com/api/v1/";
 
 interface LoginProps {
@@ -20,6 +22,7 @@ export async function login({ email, password }: LoginProps) {
     }
 
     const data = await result.json();
+    cookies().set("access_token", data.access_token);
 
     return data;
   } catch (error) {
@@ -27,3 +30,8 @@ export async function login({ email, password }: LoginProps) {
     throw error;
   }
 }
+
+export async function logout() {
+  cookies().delete("access_token");
+}
+
