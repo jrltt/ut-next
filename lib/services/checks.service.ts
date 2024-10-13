@@ -2,7 +2,7 @@ import { getAccessToken } from "@/lib/services/auth.service";
 
 const baseURL = "https://uptime.com/api/v1/";
 
-type Check = {
+export type Check = {
   pk: number;
   url: string;
   stats_url: string;
