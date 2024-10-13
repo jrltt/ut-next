@@ -35,3 +35,10 @@ export async function logout() {
   cookies().delete("access_token");
 }
 
+export function getAccessToken(): string {
+  const cookieStore = cookies();
+  const token = cookieStore.get("access_token")?.value;
+  if (!token) throw new Error("Something goes wrong; no access token found");
+
+  return token;
+}
