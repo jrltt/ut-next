@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getChecks } from "@/lib/services/checks.service";
+import Link from "next/link";
 
 export default async function ChecksPage() {
   const checks = await getChecks();
@@ -19,21 +20,23 @@ export default async function ChecksPage() {
       {/* <pre>{JSON.stringify(checks, null, 2)}</pre> */}
       <div className="flex space-x-6">
         {activeChecks.map((check) => (
-          <Card key={check.pk}>
-            <CardHeader>
-              <CardTitle>{check.name}</CardTitle>
-              <CardDescription>{check.msp_address}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>{new Date(check.created_at).toISOString()}</p>
-              {/* <pre className="text-ellipsis">
+          <Link href={`/dashboard/checks/${check.pk}`} key={check.pk}>
+            <Card>
+              <CardHeader>
+                <CardTitle>{check.name}</CardTitle>
+                <CardDescription>{check.msp_address}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p>{new Date(check.created_at).toISOString()}</p>
+                {/* <pre className="text-ellipsis">
                 {JSON.stringify(check, null, 2)}
               </pre> */}
-            </CardContent>
-            <CardFooter>
-              <p>Card Footer</p>
-            </CardFooter>
-          </Card>
+              </CardContent>
+              <CardFooter>
+                <p>Card Footer</p>
+              </CardFooter>
+            </Card>
+          </Link>
         ))}
       </div>
     </>
