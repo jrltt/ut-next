@@ -1,20 +1,15 @@
 "use server";
 
-import { login as loginService } from "@/lib/services/auth.service";
-import { cookies } from "next/headers";
+import * as authService from "@/lib/services/auth.service";
 import { redirect } from "next/navigation";
 
 export async function login(data: { email: string; password: string }) {
-  const response = await loginService(data);
-
-  if (response?.access_token) {
-    cookies().set("access_token", response.access_token);
-  }
+  await authService.login(data);
 
   redirect("/dashboard");
 }
 
 export async function logoutAction() {
-  cookies().delete("access_token");
+  authService.logout();
   redirect("/login");
 }
