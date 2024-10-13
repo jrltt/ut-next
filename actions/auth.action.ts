@@ -1,6 +1,6 @@
 "use server";
 
-import { login as loginService } from "@/lib/services/login.service";
+import { login as loginService } from "@/lib/services/auth.service";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
