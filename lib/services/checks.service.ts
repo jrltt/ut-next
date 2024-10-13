@@ -73,3 +73,22 @@ export async function getChecks(): Promise<CheckResults> {
     throw error;
   }
 }
+
+export async function getCheck(pk: number): Promise<Check> {
+  try {
+    const result = await fetch(`${baseURL}checks/${pk}/`, {
+      headers: { Authorization: `Token ${getAccessToken()}` },
+    });
+    if (!result.ok) {
+      console.error("getCheck error", result);
+      throw Error("Something goes wrong; getCheck error");
+    }
+
+    const data = result.json();
+
+    return data;
+  } catch (error) {
+    console.error("getCheck error", error);
+    throw error;
+  }
+}
