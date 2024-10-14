@@ -40,6 +40,7 @@ export default async function DashboardPage() {
     down: downChecks.length,
     paused: pausedChecks.length,
     maintenance: underMaintenanceChecks.length,
+    total: checks.results.length,
   };
 
   return (
