@@ -55,7 +55,10 @@ export default async function DashboardPage() {
             key={check.pk}
             {...{
               check: {
+                is_paused: check.is_paused,
+                check_type: check.check_type,
                 created_at: check.created_at,
+                modified_at: check.modified_at,
                 msp_address: check.msp_address,
                 name: check.name,
                 pk: check.pk,
