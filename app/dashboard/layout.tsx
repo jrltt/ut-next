@@ -5,28 +5,28 @@ function Sidebar() {
     <nav className="bg-slate-900 text-white px-4 min-w-[250px]">
       <div className="font-extrabold text-xl text-center py-4">UT.com</div>
       <ul className="space-y-2">
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Launchpad
         </li>
         <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           <Link href="/dashboard">Dashboard</Link>
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Alerts
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Monitoring
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Reports
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Status Pages
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           Secure Vault
         </li>
-        <li className="rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
+        <li className="cursor-not-allowed text-slate-300 rounded-3xl py-[15px] font-bold px-8 hover:bg-slate-500">
           IRM & On-Call
         </li>
       </ul>
