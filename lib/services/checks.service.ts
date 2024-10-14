@@ -92,3 +92,24 @@ export async function getCheck(pk: number): Promise<Check> {
     throw error;
   }
 }
+
+export async function patchCheck(
+  pk: number,
+  check: Partial<Check>
+): Promise<Check> {
+  try {
+    const result = await fetch(`${baseURL}checks/${pk}/`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Token ${getAccessToken()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(check),
+    });
+    const data = result.json();
+    return data;
+  } catch (error) {
+    console.error("patchCheck error", error);
+    throw error;
+  }
+}
