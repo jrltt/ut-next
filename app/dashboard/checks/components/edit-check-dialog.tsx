@@ -1,5 +1,6 @@
 "use client";
 
+import { updateCheck } from "@/actions/checks.action";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -38,11 +39,17 @@ function EditCheckForm() {
     defaultValues: {
       name: "",
       type: "",
+      contacts: ["default"],
+      domain: "jrltt.net",
+      beforeExpiry: 201,
+      whoIsInfo: true,
+      tags: "",
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  async function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log("You submitted the following values:", data);
+    return updateCheck(4150114, { name: data.name });
   }
 
   return (
@@ -59,7 +66,12 @@ function EditCheckForm() {
               <FormItem>
                 <FormLabel>Name of check</FormLabel>
                 <FormControl>
-                  <Input type="text" placeholder="Name of check" {...field} />
+                  <Input
+                    type="text"
+                    placeholder="Name of check"
+                    {...field}
+                    defaultValue={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -86,7 +98,12 @@ function EditCheckForm() {
                   Check of type <span className="text-red-600">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Check type" {...field} />
+                  <Input
+                    disabled
+                    placeholder="Check type"
+                    {...field}
+                    defaultValue={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -118,7 +135,7 @@ function EditCheckForm() {
               <FormItem>
                 <FormLabel>Tags</FormLabel>
                 <FormControl>
-                  <Input disabled {...field} />
+                  <Input disabled {...field} defaultValue={field.value} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -136,7 +153,12 @@ function EditCheckForm() {
                   Domain <span className="text-red-600">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="Domain" {...field} />
+                  <Input
+                    disabled
+                    placeholder="Domain"
+                    {...field}
+                    defaultValue={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -153,7 +175,12 @@ function EditCheckForm() {
                   Before expiry <span className="text-red-600">*</span>
                 </FormLabel>
                 <FormControl>
-                  <Input disabled placeholder="201" {...field} />
+                  <Input
+                    disabled
+                    placeholder="201"
+                    {...field}
+                    defaultValue={field.value}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -168,6 +195,12 @@ function EditCheckForm() {
           </p>
           <Button type="button">Refresh</Button>
         </div>
+        <DialogFooter>
+          <Button type="submit">Save</Button>
+          <Button type="button" variant="outline">
+            Cancel
+          </Button>
+        </DialogFooter>
       </form>
     </Form>
   );
@@ -209,12 +242,6 @@ export function EditCheckDialog({ id, checkType }: DialogProps) {
           </DialogDescription>
         </DialogHeader>
         <EditCheckForm />
-        <DialogFooter>
-          <Button type="submit">Save</Button>
-          <Button type="button" variant="outline">
-            Cancel
-          </Button>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
