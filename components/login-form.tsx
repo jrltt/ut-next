@@ -29,8 +29,6 @@ export function LoginForm() {
   });
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    // console.log(data, "You submitted the following values:");
-
     return login(data);
   }
 
