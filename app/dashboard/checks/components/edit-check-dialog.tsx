@@ -20,36 +20,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Check } from "@/lib/services/checks.service";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+// FIXME implement better validations
 const FormSchema = z.object({
   name: z.string(),
   type: z.string(),
   contacts: z.array(z.string()),
-  tags: z.string().optional(),
+  tags: z.array(z.string()).optional(),
   domain: z.string(),
   beforeExpiry: z.number(),
-  whoIsInfo: z.boolean(),
 });
-
-function EditCheckForm() {
+// FIXME pick props from check that are relevant to the form
+function EditCheckForm({
+  check,
+  closeDialog,
+}: {
+  check: Check;
+  closeDialog: () => void;
+}) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      name: "",
-      type: "",
-      contacts: ["default"],
-      domain: "jrltt.net",
-      beforeExpiry: 201,
-      whoIsInfo: true,
-      tags: "",
+      name: check?.name ?? "",
+      type: check?.check_type ?? "",
+      contacts: check?.contact_groups ?? ["default"],
+      domain: check?.msp_address ?? "",
+      beforeExpiry: 20,
+      tags: check?.tags ?? [],
     },
   });
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("You submitted the following values:", data);
-    return updateCheck(4150114, { name: data.name });
+    await updateCheck(check.pk, { name: data.name });
+    closeDialog();
   }
 
   return (
@@ -64,7 +73,7 @@ function EditCheckForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name of check</FormLabel>
+                <Label>Name of check</Label>
                 <FormControl>
                   <Input
                     type="text"
@@ -79,7 +88,7 @@ function EditCheckForm() {
           />
         </div>
         <div className="col-span-full">
-          <p className="text-sm mb-2">
+          <p className="text-sm mb-2 font-bold">
             Check interval: 24 hours <span className="text-red-600">*</span>
           </p>
           <p className="text-xs text-slate-500">
@@ -142,6 +151,7 @@ function EditCheckForm() {
             )}
           />
         </div>
+        {/* TODO: missing tabs based on the check type */}
         <div className="col-span-full">Required</div>
         <div className="col-span-1">
           <FormField
@@ -188,16 +198,32 @@ function EditCheckForm() {
           />
         </div>
         <div className="col-span-full">
-          <p>
-            expires: 2025-05-20 nameservers:
-            ns1085.ui-dns.biz,ns1085.ui-dns.com,ns1085.ui-dns.de,ns1085.ui-dns.org
-            registrar: ionos se
-          </p>
-          <Button type="button">Refresh</Button>
+          {check.check_type === "WHOIS" && (
+            <>
+              <p className="text-sm mb-2 font-bold">
+                Whois info <span className="text-red-600">*</span>
+              </p>
+              <p className="bg-slate-200 p-4 rounded-sm">
+                expires: 2025-05-20 nameservers:
+                ns1085.ui-dns.biz,ns1085.ui-dns.com,ns1085.ui-dns.de,ns1085.ui-dns.org
+                registrar: ionos se
+              </p>
+              <Button type="button" className="bg-blue-500 mt-2" disabled>
+                Refresh
+              </Button>
+            </>
+          )}
         </div>
-        <DialogFooter>
-          <Button type="submit">Save</Button>
-          <Button type="button" variant="outline">
+        <DialogFooter className="col-span-full border-t border-t-slate-400 pt-6">
+          <Button type="submit" className="bg-blue-500">
+            Save
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            className="border-blue-500 text-blue-500"
+            onClick={closeDialog}
+          >
             Cancel
           </Button>
         </DialogFooter>
@@ -206,18 +232,23 @@ function EditCheckForm() {
   );
 }
 
-interface DialogProps {
-  id: number;
-  checkType?: string;
-}
+type DialogProps = { check: Check };
 
-export function EditCheckDialog({ id, checkType }: DialogProps) {
-  console.log(id, checkType);
+export function EditCheckDialog({ check }: DialogProps) {
+  const [open, setOpen] = useState(false);
+
+  function closeDialog() {
+    setOpen(false);
+  }
+
+  function openDialog() {
+    setOpen(true);
+  }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button" variant="outline">
+        <Button type="button" variant="outline" onClick={openDialog}>
           Edit check
         </Button>
       </DialogTrigger>
@@ -227,7 +258,10 @@ export function EditCheckDialog({ id, checkType }: DialogProps) {
             Edit check
           </DialogTitle>
           <DialogDescription className="flex justify-between space-x-3">
-            <Button className="w-full" variant="outline">
+            <Button
+              className="w-full border-blue-500 text-blue-500"
+              variant="outline"
+            >
               Basic
             </Button>
             <Button disabled className="w-full" variant="outline">
@@ -241,7 +275,7 @@ export function EditCheckDialog({ id, checkType }: DialogProps) {
             </Button>
           </DialogDescription>
         </DialogHeader>
-        <EditCheckForm />
+        <EditCheckForm {...{ check }} closeDialog={closeDialog} />
       </DialogContent>
     </Dialog>
   );

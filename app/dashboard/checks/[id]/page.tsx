@@ -21,12 +21,13 @@ export default async function CheckIdPage({
             {params.id}
           </pre>
         </h1>
+
         <div className="flex space-x-2">
           <Button type="button" disabled variant="outline">
             <Share2 className="h-4 w-4" />
             Share Check Analysis <ChevronDownIcon />
           </Button>
-          <EditCheckDialog id={details.pk} />
+          <EditCheckDialog {...{ check: details }} />
           <Button
             disabled
             type="button"
