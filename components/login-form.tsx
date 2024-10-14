@@ -59,7 +59,9 @@ export function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Log in</Button>
+        <Button type="submit" className="w-full bg-green-600">
+          Log in
+        </Button>
       </form>
     </Form>
   );
