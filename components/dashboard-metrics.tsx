@@ -23,10 +23,11 @@ export function DashboardMetrics({ title, link, items }: Props) {
           <li
             key={item}
             className={cn(
-              idx === 1 && "border-t border-slate-300 border-b py-3"
+              idx === 1 && "border-t border-slate-300 border-b py-3",
+              "flex justify-between"
             )}
           >
-            {item}
+            {item} <span className="text-slate-400">N/A</span>
           </li>
         ))}
       </ul>
